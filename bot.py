@@ -7,7 +7,7 @@ import os.path
 import glob
 import logging
 import sqlite3
-from database.db_handler import DBHandler
+#from database.db_handler import DBHandler
 from telebot import types
 from io import StringIO
 from util import *
@@ -15,9 +15,9 @@ from util import *
 
 bot_token = '817233185:AAFHWV5-C9SBR-3BrGpUZGd78RJlvVGu8Y4'
 print("-"*15)
-print("Initialising Amaris AI Telegram API Bot")
+print("Initialising Venue Booking Telegram Bot")
 bot = telebot.TeleBot(token=bot_token)
-print("Amaris AI Telegram API Bot is now ready")
+print("Venue Booking Telegram Bot is now ready")
 print("-"*15)
 print("Waiting to receive Telegram messages...")
 ts = time.time()
@@ -137,125 +137,125 @@ def handle_video(message):
     reply = saveVideoDocToFile(message) #saves the document to doc.[FILE_TYPE]
     bot.reply_to(message,reply) #responds with success message
 
-def saveAudioDocToFile(msg):
-    file_id = msg.audio.file_id
-    file_info = bot.get_file(file_id)
-    downloaded_file = bot.download_file(file_info.file_path)
-    df = open("toTransfer/audio" + str(msg.message_id) + ".mp3","wb")
-    logging.info('main: Created file at' + "toTransfer/audio" + str(msg.message_id) + ".mp3")
-    df.write(downloaded_file) #saves the downloaded file into 'doc'.[FILE_TYPE]
-    df.close()
-    transfer()
-    return "Your audio document has been saved successfully"
-
-def saveVideoDocToFile(msg):
-    file_id = msg.video.file_id
-    file_info = bot.get_file(file_id)
-    downloaded_file = bot.download_file(file_info.file_path)
-    mime_type = msg.video.mime_type
-    split_string = mime_type.split("/")
-    file_type = split_string[1]
-    df = open("toTransfer/video" + str(msg.message_id) + "." + file_type,"wb")
-    logging.info('main: Created file at' + "toTransfer/video" + str(msg.message_id) + "." + file_type)
-    df.write(downloaded_file) #saves the downloaded file into 'video'.[FILE_TYPE]
-    df.close()
-    transfer()
-    return "Your video document has been saved succcessfully"
-
-def saveMessageToFile(msg):
-    f = open("toTransfer/message" + str(msg.message_id) + ".txt", "a+") #a+ signifies that this is an append operation
-    if msg.chat.last_name is None : #checks if there is no last name field
-        result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + "|Text : " + msg.text + "|\n"
-        logging.info('main: ' + result)
-    else :
-        result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + " " + msg.chat.last_name + "|Text : " + msg.text + "|\n"
-        logging.info('main: ' + result)
-    finalresult = deEmojify(result) #removes emojis from the text message, deemed not necessary
-    f.write(finalresult)
-    f.close()
-    transfer()
-    return "Your message has been saved successfully"
-
-
-def saveDocumentToFile(msg):
-    file_id = msg.document.file_id
-    file_info = bot.get_file(file_id)
-    downloaded_file = bot.download_file(file_info.file_path) #downloads the file sent to telegram bot
-    split_string = (msg.document.file_name).split(".")
-    file_type = split_string[1] #infers the file type from the name of the file
-    df = open("toTransfer/" + str(msg.document.file_name), "wb")
-    logging.info('main: Created file at' + "toTransfer/" + str(msg.message_id) + "." + file_type, "wb")
-    df.write(downloaded_file) #saves the downloaded file into 'doc'.[FILE_TYPE]
-    df.close()
-    transfer()
-    return "Your document has been saved successfully"
-
-def saveDocumentToLogs(msg):
-    f = open("document_log.txt", "a+") #a+ signifies that this is an append operation
-    if msg.chat.last_name is None:
-        result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + "|File Name : " + msg.document.file_name + "|\n"
-        logging.info('main: ' + result)
-    else :
-        result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + " " + msg.chat.last_name +  "|File Name : " + msg.document.file_name + "|\n"
-        logging.info('main: ' + result)
-    f.write(result)
-    f.close()
-
-# def savePictureToFile(msg):
-#     bot.reply_to(msg, "PROCESSING IMAGE...")
-#     file_id = msg.photo[0].file_id
+# def saveAudioDocToFile(msg):
+#     file_id = msg.audio.file_id
 #     file_info = bot.get_file(file_id)
-#     downloaded_file = bot.download_file(file_info.file_path) #downloads the file sent to telegram bot
-#     PICTURE = "picture" + str(msg.message_id) + ".jpg"
-#     df = open("toTransfer/picture" + str(msg.message_id) +".jpg", "wb")
-#     logging.info('main: Created file at' + "toTransfer/picture" + str(msg.message_id) +".jpg")
-#     df.write(downloaded_file) #saves the downloaded file into 'picture'.[FILE_TYPE]
+#     downloaded_file = bot.download_file(file_info.file_path)
+#     df = open("toTransfer/audio" + str(msg.message_id) + ".mp3","wb")
+#     logging.info('main: Created file at' + "toTransfer/audio" + str(msg.message_id) + ".mp3")
+#     df.write(downloaded_file) #saves the downloaded file into 'doc'.[FILE_TYPE]
 #     df.close()
 #     transfer()
-#     #Handle Cable Duct Image Processing
-#     cableDuctOut = subprocess.run(["python", "test.py", "testMoveDir/" + PICTURE], stdout = subprocess.PIPE)
-#     cableDuctResult = str(cableDuctOut.stdout.decode()).rstrip()        
-#     cableDuctPhoto = open('scriptImages/demo.png', 'rb')
-#     cableNum = cableDuctResult.split(' ')[-1]
-#     bot.send_photo(msg.chat.id, cableDuctPhoto)
-#     bot.send_message(msg.chat.id, cableDuctResult)
-#     os.remove('scriptImages/demo.png') #cleanup
+#     return "Your audio document has been saved successfully"
 
-#     #Handle Blueprint Processing
-#     blueprintOut = subprocess.run(["python", "demoBlueprint.py"], stdout = subprocess.PIPE)
-#     blueprintResult = str(blueprintOut.stdout.decode()).rstrip()
-#     blueprintPhoto = open('scriptImages/blueprint_reference.png', 'rb')
-#     blueNum = blueprintResult.split(' ')[-1]
-#     bot.send_photo(msg.chat.id, blueprintPhoto)
-#     if cableNum == blueNum:
-#         return ("You have inserted the cable correctly into Duct " + cableNum + ". Good work!")
-#         #bot.send_message(msg.chat.id, "You have inserted the cable correctly into duct " + cableNum + ". Good work :).")
-#     else:
-#         return ("According to the blueprint, the correct Duct is Duct " + blueNum + ". Please check and try again :).")
-#         #bot.send_message(msg.chat.id, "According to the blueprint, the correct duct is " + blueNum + ". Please check and try again.")
+# def saveVideoDocToFile(msg):
+#     file_id = msg.video.file_id
+#     file_info = bot.get_file(file_id)
+#     downloaded_file = bot.download_file(file_info.file_path)
+#     mime_type = msg.video.mime_type
+#     split_string = mime_type.split("/")
+#     file_type = split_string[1]
+#     df = open("toTransfer/video" + str(msg.message_id) + "." + file_type,"wb")
+#     logging.info('main: Created file at' + "toTransfer/video" + str(msg.message_id) + "." + file_type)
+#     df.write(downloaded_file) #saves the downloaded file into 'video'.[FILE_TYPE]
+#     df.close()
+#     transfer()
+#     return "Your video document has been saved succcessfully"
 
-    #transfers files stored in the toTransfer folder to MASTER drive/testMoveDir(if master drive is not found)
-def transfer():
-    moveDir = SearchMasterDrive()
-    moveFolder(OUTPUT_DIR,moveDir)
-    print("Transferring from: " + OUTPUT_DIR + " to " + moveDir)
-    print("="*15)
-    print("Waiting to receive Telegram messages...")
-    logging.info('main: Transferring from: ' + OUTPUT_DIR + " to " + moveDir)
-    logging.info('main: Waiting to receive Telegram messages...')
-    logging.info("="*15)
+# def saveMessageToFile(msg):
+#     f = open("toTransfer/message" + str(msg.message_id) + ".txt", "a+") #a+ signifies that this is an append operation
+#     if msg.chat.last_name is None : #checks if there is no last name field
+#         result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + "|Text : " + msg.text + "|\n"
+#         logging.info('main: ' + result)
+#     else :
+#         result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + " " + msg.chat.last_name + "|Text : " + msg.text + "|\n"
+#         logging.info('main: ' + result)
+#     finalresult = deEmojify(result) #removes emojis from the text message, deemed not necessary
+#     f.write(finalresult)
+#     f.close()
+#     transfer()
+#     return "Your message has been saved successfully"
 
-def savePictureToLogs(msg):
-    f = open("photo_log.txt", "a+") #a+ signifies that this is an append operation
-    if msg.chat.last_name is None:
-        result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + "|PHOTO " + "|\n"
-        logging.info('main: ' + result)
-    else :
-        result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + " " + msg.chat.last_name +  "|PHOTO " + "|\n"
-        logging.info('main: ' + result)
-    f.write(result)
-    f.close()
-    return "Your photo has been saved successfully"
+
+# def saveDocumentToFile(msg):
+#     file_id = msg.document.file_id
+#     file_info = bot.get_file(file_id)
+#     downloaded_file = bot.download_file(file_info.file_path) #downloads the file sent to telegram bot
+#     split_string = (msg.document.file_name).split(".")
+#     file_type = split_string[1] #infers the file type from the name of the file
+#     df = open("toTransfer/" + str(msg.document.file_name), "wb")
+#     logging.info('main: Created file at' + "toTransfer/" + str(msg.message_id) + "." + file_type, "wb")
+#     df.write(downloaded_file) #saves the downloaded file into 'doc'.[FILE_TYPE]
+#     df.close()
+#     transfer()
+#     return "Your document has been saved successfully"
+
+# def saveDocumentToLogs(msg):
+#     f = open("document_log.txt", "a+") #a+ signifies that this is an append operation
+#     if msg.chat.last_name is None:
+#         result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + "|File Name : " + msg.document.file_name + "|\n"
+#         logging.info('main: ' + result)
+#     else :
+#         result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + " " + msg.chat.last_name +  "|File Name : " + msg.document.file_name + "|\n"
+#         logging.info('main: ' + result)
+#     f.write(result)
+#     f.close()
+
+# # def savePictureToFile(msg):
+# #     bot.reply_to(msg, "PROCESSING IMAGE...")
+# #     file_id = msg.photo[0].file_id
+# #     file_info = bot.get_file(file_id)
+# #     downloaded_file = bot.download_file(file_info.file_path) #downloads the file sent to telegram bot
+# #     PICTURE = "picture" + str(msg.message_id) + ".jpg"
+# #     df = open("toTransfer/picture" + str(msg.message_id) +".jpg", "wb")
+# #     logging.info('main: Created file at' + "toTransfer/picture" + str(msg.message_id) +".jpg")
+# #     df.write(downloaded_file) #saves the downloaded file into 'picture'.[FILE_TYPE]
+# #     df.close()
+# #     transfer()
+# #     #Handle Cable Duct Image Processing
+# #     cableDuctOut = subprocess.run(["python", "test.py", "testMoveDir/" + PICTURE], stdout = subprocess.PIPE)
+# #     cableDuctResult = str(cableDuctOut.stdout.decode()).rstrip()        
+# #     cableDuctPhoto = open('scriptImages/demo.png', 'rb')
+# #     cableNum = cableDuctResult.split(' ')[-1]
+# #     bot.send_photo(msg.chat.id, cableDuctPhoto)
+# #     bot.send_message(msg.chat.id, cableDuctResult)
+# #     os.remove('scriptImages/demo.png') #cleanup
+
+# #     #Handle Blueprint Processing
+# #     blueprintOut = subprocess.run(["python", "demoBlueprint.py"], stdout = subprocess.PIPE)
+# #     blueprintResult = str(blueprintOut.stdout.decode()).rstrip()
+# #     blueprintPhoto = open('scriptImages/blueprint_reference.png', 'rb')
+# #     blueNum = blueprintResult.split(' ')[-1]
+# #     bot.send_photo(msg.chat.id, blueprintPhoto)
+# #     if cableNum == blueNum:
+# #         return ("You have inserted the cable correctly into Duct " + cableNum + ". Good work!")
+# #         #bot.send_message(msg.chat.id, "You have inserted the cable correctly into duct " + cableNum + ". Good work :).")
+# #     else:
+# #         return ("According to the blueprint, the correct Duct is Duct " + blueNum + ". Please check and try again :).")
+# #         #bot.send_message(msg.chat.id, "According to the blueprint, the correct duct is " + blueNum + ". Please check and try again.")
+
+#     #transfers files stored in the toTransfer folder to MASTER drive/testMoveDir(if master drive is not found)
+# def transfer():
+#     moveDir = SearchMasterDrive()
+#     moveFolder(OUTPUT_DIR,moveDir)
+#     print("Transferring from: " + OUTPUT_DIR + " to " + moveDir)
+#     print("="*15)
+#     print("Waiting to receive Telegram messages...")
+#     logging.info('main: Transferring from: ' + OUTPUT_DIR + " to " + moveDir)
+#     logging.info('main: Waiting to receive Telegram messages...')
+#     logging.info("="*15)
+
+# def savePictureToLogs(msg):
+#     f = open("photo_log.txt", "a+") #a+ signifies that this is an append operation
+#     if msg.chat.last_name is None:
+#         result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + "|PHOTO " + "|\n"
+#         logging.info('main: ' + result)
+#     else :
+#         result = "Message ID :" + str(msg.message_id) + "|Chat ID :" + str(msg.chat.id) + "|Username :" + msg.chat.username + "|Name :" + msg.chat.first_name + " " + msg.chat.last_name +  "|PHOTO " + "|\n"
+#         logging.info('main: ' + result)
+#     f.write(result)
+#     f.close()
+#     return "Your photo has been saved successfully"
 
 def saveEmojis(msg):
     f = open("emoji_log.txt", "a+")
