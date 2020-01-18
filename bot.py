@@ -6,17 +6,12 @@ import requests
 import os.path
 import glob
 import logging
-import regex as re
-import Integrate_CD #for image processing
-import subprocess
 import sqlite3
 from database.db_handler import DBHandler
 from telebot import types
 from io import StringIO
 from util import *
-from greeting import handleGreeting
-from order import handleOrder
-from availability import *
+
 
 bot_token = '817233185:AAFHWV5-C9SBR-3BrGpUZGd78RJlvVGu8Y4'
 print("-"*15)
@@ -206,38 +201,38 @@ def saveDocumentToLogs(msg):
     f.write(result)
     f.close()
 
-def savePictureToFile(msg):
-    bot.reply_to(msg, "PROCESSING IMAGE...")
-    file_id = msg.photo[0].file_id
-    file_info = bot.get_file(file_id)
-    downloaded_file = bot.download_file(file_info.file_path) #downloads the file sent to telegram bot
-    PICTURE = "picture" + str(msg.message_id) + ".jpg"
-    df = open("toTransfer/picture" + str(msg.message_id) +".jpg", "wb")
-    logging.info('main: Created file at' + "toTransfer/picture" + str(msg.message_id) +".jpg")
-    df.write(downloaded_file) #saves the downloaded file into 'picture'.[FILE_TYPE]
-    df.close()
-    transfer()
-    #Handle Cable Duct Image Processing
-    cableDuctOut = subprocess.run(["python", "test.py", "testMoveDir/" + PICTURE], stdout = subprocess.PIPE)
-    cableDuctResult = str(cableDuctOut.stdout.decode()).rstrip()        
-    cableDuctPhoto = open('scriptImages/demo.png', 'rb')
-    cableNum = cableDuctResult.split(' ')[-1]
-    bot.send_photo(msg.chat.id, cableDuctPhoto)
-    bot.send_message(msg.chat.id, cableDuctResult)
-    os.remove('scriptImages/demo.png') #cleanup
+# def savePictureToFile(msg):
+#     bot.reply_to(msg, "PROCESSING IMAGE...")
+#     file_id = msg.photo[0].file_id
+#     file_info = bot.get_file(file_id)
+#     downloaded_file = bot.download_file(file_info.file_path) #downloads the file sent to telegram bot
+#     PICTURE = "picture" + str(msg.message_id) + ".jpg"
+#     df = open("toTransfer/picture" + str(msg.message_id) +".jpg", "wb")
+#     logging.info('main: Created file at' + "toTransfer/picture" + str(msg.message_id) +".jpg")
+#     df.write(downloaded_file) #saves the downloaded file into 'picture'.[FILE_TYPE]
+#     df.close()
+#     transfer()
+#     #Handle Cable Duct Image Processing
+#     cableDuctOut = subprocess.run(["python", "test.py", "testMoveDir/" + PICTURE], stdout = subprocess.PIPE)
+#     cableDuctResult = str(cableDuctOut.stdout.decode()).rstrip()        
+#     cableDuctPhoto = open('scriptImages/demo.png', 'rb')
+#     cableNum = cableDuctResult.split(' ')[-1]
+#     bot.send_photo(msg.chat.id, cableDuctPhoto)
+#     bot.send_message(msg.chat.id, cableDuctResult)
+#     os.remove('scriptImages/demo.png') #cleanup
 
-    #Handle Blueprint Processing
-    blueprintOut = subprocess.run(["python", "demoBlueprint.py"], stdout = subprocess.PIPE)
-    blueprintResult = str(blueprintOut.stdout.decode()).rstrip()
-    blueprintPhoto = open('scriptImages/blueprint_reference.png', 'rb')
-    blueNum = blueprintResult.split(' ')[-1]
-    bot.send_photo(msg.chat.id, blueprintPhoto)
-    if cableNum == blueNum:
-        return ("You have inserted the cable correctly into Duct " + cableNum + ". Good work!")
-        #bot.send_message(msg.chat.id, "You have inserted the cable correctly into duct " + cableNum + ". Good work :).")
-    else:
-        return ("According to the blueprint, the correct Duct is Duct " + blueNum + ". Please check and try again :).")
-        #bot.send_message(msg.chat.id, "According to the blueprint, the correct duct is " + blueNum + ". Please check and try again.")
+#     #Handle Blueprint Processing
+#     blueprintOut = subprocess.run(["python", "demoBlueprint.py"], stdout = subprocess.PIPE)
+#     blueprintResult = str(blueprintOut.stdout.decode()).rstrip()
+#     blueprintPhoto = open('scriptImages/blueprint_reference.png', 'rb')
+#     blueNum = blueprintResult.split(' ')[-1]
+#     bot.send_photo(msg.chat.id, blueprintPhoto)
+#     if cableNum == blueNum:
+#         return ("You have inserted the cable correctly into Duct " + cableNum + ". Good work!")
+#         #bot.send_message(msg.chat.id, "You have inserted the cable correctly into duct " + cableNum + ". Good work :).")
+#     else:
+#         return ("According to the blueprint, the correct Duct is Duct " + blueNum + ". Please check and try again :).")
+#         #bot.send_message(msg.chat.id, "According to the blueprint, the correct duct is " + blueNum + ". Please check and try again.")
 
     #transfers files stored in the toTransfer folder to MASTER drive/testMoveDir(if master drive is not found)
 def transfer():
