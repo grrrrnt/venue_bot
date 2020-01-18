@@ -1,0 +1,99 @@
+18:26:24 INFO ============== Start =================
+18:26:24 INFO Time Started: 18:26:24
+18:26:24 INFO main: TeleBot Started
+18:26:24 INFO ======================================
+18:27:54 INFO ============== Start =================
+18:27:54 INFO Time Started: 18:27:54
+18:27:54 INFO main: TeleBot Started
+18:27:54 INFO ======================================
+18:28:53 INFO ============== Start =================
+18:28:53 INFO Time Started: 18:28:53
+18:28:53 INFO main: TeleBot Started
+18:28:53 INFO ======================================
+18:30:14 INFO ============== Start =================
+18:30:14 INFO Time Started: 18:30:14
+18:30:14 INFO main: TeleBot Started
+18:30:14 INFO ======================================
+18:41:31 INFO ============== Start =================
+18:41:31 INFO Time Started: 18:41:31
+18:41:31 INFO main: TeleBot Started
+18:41:31 INFO ======================================
+18:42:45 INFO ============== Start =================
+18:42:45 INFO Time Started: 18:42:45
+18:42:45 INFO main: TeleBot Started
+18:42:45 INFO ======================================
+18:45:38 INFO ============== Start =================
+18:45:38 INFO Time Started: 18:45:38
+18:45:38 INFO main: TeleBot Started
+18:45:38 INFO ======================================
+18:46:53 INFO ============== Start =================
+18:46:53 INFO Time Started: 18:46:53
+18:46:53 INFO main: TeleBot Started
+18:46:53 INFO ======================================
+18:52:10 INFO ============== Start =================
+18:52:10 INFO Time Started: 18:52:10
+18:52:10 INFO main: TeleBot Started
+18:52:10 INFO ======================================
+18:52:10 INFO Starting new HTTPS connection (1): api.telegram.org
+19:07:05 INFO Starting new HTTPS connection (1): api.telegram.org
+19:07:12 ERROR NameError occurred, args=("name 'DBHandler' is not defined",)
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/HacknRoll/lib/python3.7/site-packages/telebot/util.py", line 60, in run
+    task(*args, **kwargs)
+  File "bot.py", line 73, in handle_message
+    coordinates = checkJobId(jobId)
+  File "bot.py", line 60, in checkJobId
+    db_handler = DBHandler(conn)
+NameError: name 'DBHandler' is not defined
+
+19:28:37 INFO ============== Start =================
+19:28:37 INFO Time Started: 19:28:37
+19:28:37 INFO main: TeleBot Started
+19:28:37 INFO ======================================
+19:28:37 INFO Starting new HTTPS connection (1): api.telegram.org
+19:28:47 INFO Starting new HTTPS connection (1): api.telegram.org
+19:37:02 INFO ============== Start =================
+19:37:02 INFO Time Started: 19:37:02
+19:37:02 INFO main: TeleBot Started
+19:37:02 INFO ======================================
+19:37:02 INFO Starting new HTTPS connection (1): api.telegram.org
+19:37:19 INFO Starting new HTTPS connection (1): api.telegram.org
+19:43:51 INFO ============== Start =================
+19:43:51 INFO Time Started: 19:43:51
+19:43:51 INFO main: TeleBot Started
+19:43:51 INFO ======================================
+19:43:51 INFO Starting new HTTPS connection (1): api.telegram.org
+19:43:57 INFO Starting new HTTPS connection (1): api.telegram.org
+19:44:12 INFO ============== Start =================
+19:44:12 INFO Time Started: 19:44:12
+19:44:12 INFO main: TeleBot Started
+19:44:12 INFO ======================================
+19:44:12 INFO Starting new HTTPS connection (1): api.telegram.org
+19:44:20 INFO Starting new HTTPS connection (1): api.telegram.org
+19:45:37 ERROR NameError occurred, args=("name 'saveMessageToFile' is not defined",)
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/HacknRoll/lib/python3.7/site-packages/telebot/util.py", line 60, in run
+    task(*args, **kwargs)
+  File "bot.py", line 95, in handle_message
+    reply = saveMessageToFile(message) #saves the text to message_log.txt
+NameError: name 'saveMessageToFile' is not defined
+
+19:48:57 INFO ============== Start =================
+19:48:57 INFO Time Started: 19:48:57
+19:48:57 INFO main: TeleBot Started
+19:48:57 INFO ======================================
+19:48:57 INFO Starting new HTTPS connection (1): api.telegram.org
+19:48:58 ERROR NameError occurred, args=("name 'saveMessageToFile' is not defined",)
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/HacknRoll/lib/python3.7/site-packages/telebot/util.py", line 60, in run
+    task(*args, **kwargs)
+  File "bot.py", line 99, in handle_message
+    reply = saveMessageToFile(message) #saves the text to message_log.txt
+NameError: name 'saveMessageToFile' is not defined
+
+19:51:28 INFO ============== Start =================
+19:51:28 INFO Time Started: 19:51:28
+19:51:28 INFO main: TeleBot Started
+19:51:28 INFO ======================================
+19:51:28 INFO Starting new HTTPS connection (1): api.telegram.org
+19:51:33 INFO Starting new HTTPS connection (1): api.telegram.org

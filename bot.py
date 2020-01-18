@@ -9,14 +9,14 @@ import logging
 import sqlite3
 #from database.db_handler import DBHandler
 from telebot import types
+from telebot import *
 from io import StringIO
 from util import *
 
-
-bot_token = '817233185:AAFHWV5-C9SBR-3BrGpUZGd78RJlvVGu8Y4'
+bot_token = '813143053:AAHOr7bTW2oeijkTcDu5ffkpoQGd7yGfvzo'
 print("-"*15)
 print("Initialising Venue Booking Telegram Bot")
-bot = telebot.TeleBot(token=bot_token)
+bot = telebot.TeleBot(bot_token)
 print("Venue Booking Telegram Bot is now ready")
 print("-"*15)
 print("Waiting to receive Telegram messages...")
@@ -34,7 +34,12 @@ logging.info('======================================')
 def send_welcome(message):
     try:
         bot.send_message(message.chat.id, "Hello User!")
-        bot.send_message(message.chat.id, "Send Your Job ID as: *JOB AXXX*", parse_mode='MarkdownV2')
+        bot.send_message(message.chat.id, "Select the *location* of the room that you would like to book", parse_mode='MarkdownV2')
+        markup = types.ReplyKeyboardMarkup(row_width = 3, one_time_keyboard = True, resize_keyboard = True)
+        itembtn1 = types.KeyboardButton('FASS')
+        itembtn2 = types.KeyboardButton('BIZ')
+        itembtn3 = types.KeyboardButton('COM')
+        markup.add(itembtn1, itembtn2, itembtn3)
     except Exception as e:
         bot.reply_to(message, "There was a problem. Please try again.")
         print(e)
@@ -271,5 +276,3 @@ def extractQuotes(inputString):
 
 
 bot.polling() #gets bot to start listening for updates
-
-
